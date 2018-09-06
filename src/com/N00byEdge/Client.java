@@ -1,8 +1,6 @@
 package com.N00byEdge;
 
-import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Kernel32;
-import com.sun.jna.platform.win32.WinNT;
 
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
@@ -10,13 +8,13 @@ import java.nio.charset.StandardCharsets;
 
 public class Client {
     public static final int READ_WRITE = 0x1 | 0x2 | 0x4;
-    private static final int gameSize = 4 // ServerProcID
-                                      + 1 // IsConnected
+    private static final int GAME_SIZE = 4 // ServerProcID
+                                      + 4 // IsConnected
                                       + 4 // LastKeepAliveTime
     ;
 
     private static final int maxNumGames = 8;
-    private static final int gameTableSize = gameSize * maxNumGames;
+    private static final int gameTableSize = GAME_SIZE * maxNumGames;
     private ByteBuffer sharedMemory;
     private LittleEndianPipe pipe;
 
@@ -465,12 +463,12 @@ public class Client {
     }
 
     public Client() throws Throwable {
-        WinNT.HANDLE gameListHandle = MappingKernel.INSTANCE.OpenFileMapping(READ_WRITE, false, "Local\\bwapi_shared_memory_game_list");
-        Pointer p = Kernel32.INSTANCE.MapViewOfFile(gameListHandle, READ_WRITE, 0, 0, gameTableSize);
+        ByteBuffer buffer = Kernel32.INSTANCE.MapViewOfFile(MappingKernel.INSTANCE.OpenFileMapping(READ_WRITE, false, "Local\\bwapi_shared_memory_game_list"), READ_WRITE, 0, 0, gameTableSize).getByteBuffer(0, GAME_SIZE * 8);
+        buffer.order(ByteOrder.LITTLE_ENDIAN);
         for(int i = 0; i < 8; ++ i) {
-            int procID = p.getInt(gameSize * i);
-            boolean connected = p.getByte(gameSize * i + 4) != 0;
-            int lastKeepAliveTime = p.getInt(gameSize * i + 5);
+            int procID = buffer.getInt(GAME_SIZE * i);
+            boolean connected = buffer.get(GAME_SIZE * i + 4) != 0;
+            int lastKeepAliveTime = buffer.getInt(GAME_SIZE * i + 8);
 
             if(procID != 0 && !connected) {
                 try {
