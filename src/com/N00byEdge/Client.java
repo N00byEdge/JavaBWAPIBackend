@@ -121,110 +121,110 @@ public class Client {
             int id;
             UnitData(int id) { this.id = id; }
 
-            int clearanceLevel() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id); }
-            int id() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 4); }
-            int player() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 8); }
-            int type() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 12); }
-            int positionX() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 16); }
-            int positionY() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 20); }
-            double angle() { return parseDouble(UnitOffset + 4 + UnitData.SIZE * id + 24); }
-            double velocityX() { return parseDouble(UnitOffset + 4 + UnitData.SIZE * id + 32); }
-            double velocityY() { return parseDouble(UnitOffset + 4 + UnitData.SIZE * id + 40); }
-            int hitPoints() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 48); }
-            int lastHitPoints() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 52); }
-            int shields() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 56); }
-            int energy() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 60); }
-            int resouces() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 64); }
-            int resourceGroup() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 68); }
+            int clearanceLevel() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id); }
+            int id() { return id; }
+            int player() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 8); }
+            int type() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 12); }
+            int positionX() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 16); }
+            int positionY() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 20); }
+            double angle() { return parseDouble(UnitOffset + 8 + UnitData.SIZE * id + 24); }
+            double velocityX() { return parseDouble(UnitOffset + 8 + UnitData.SIZE * id + 32); }
+            double velocityY() { return parseDouble(UnitOffset + 8 + UnitData.SIZE * id + 40); }
+            int hitPoints() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 48); }
+            int lastHitPoints() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 52); }
+            int shields() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 56); }
+            int energy() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 60); }
+            int resouces() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 64); }
+            int resourceGroup() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 68); }
 
-            int killCount() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 72); }
-            int acidSporeCount() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 76); }
-            int scarabCount() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 80); }
-            int interceptorCount() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 84); }
-            int spiderMineCount() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 88); }
-            int groundWeaponCooldown() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 92); }
-            int airWeaponCooldown() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 96); }
-            int spellCooldown() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 100); }
-            int defenseMatrixPoints() { return sharedMemory.getInt(UnitOffset + 4 * UnitData.SIZE * id + 104); }
+            int killCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 72); }
+            int acidSporeCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 76); }
+            int scarabCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 80); }
+            int interceptorCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 84); }
+            int spiderMineCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 88); }
+            int groundWeaponCooldown() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 92); }
+            int airWeaponCooldown() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 96); }
+            int spellCooldown() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 100); }
+            int defenseMatrixPoints() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 104); }
 
-            int defenseMatrixTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 108); }
-            int ensnareTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 112); }
-            int irradiateTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 116); }
-            int lockdownTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 120); }
-            int maelstromTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 124); }
-            int orderTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 128); }
-            int plagueTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 132); }
-            int removeTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 136); }
-            int stasisTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 140); }
-            int stimTimer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 144); }
+            int defenseMatrixTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 108); }
+            int ensnareTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 112); }
+            int irradiateTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 116); }
+            int lockdownTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 120); }
+            int maelstromTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 124); }
+            int orderTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 128); }
+            int plagueTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 132); }
+            int removeTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 136); }
+            int stasisTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 140); }
+            int stimTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 144); }
 
-            int buildType() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 148); }
-            int trainingQueueCount() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 152); }
-            int trainingQueue(int pos) { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 156 + pos * 4); }
-            int tech() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 176); }
-            int upgrade() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 180); }
-            int remainingBuildTime() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 184); }
-            int remainingTrainTime() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 188); }
-            int remainingResearchTime() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 192); }
-            int remainingUpgradeTime() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 196); }
-            int buildUnit() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 200); }
+            int buildType() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 148); }
+            int trainingQueueCount() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 152); }
+            int trainingQueue(int pos) { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 156 + pos * 4); }
+            int tech() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 176); }
+            int upgrade() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 180); }
+            int remainingBuildTime() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 184); }
+            int remainingTrainTime() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 188); }
+            int remainingResearchTime() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 192); }
+            int remainingUpgradeTime() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 196); }
+            int buildUnit() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 200); }
 
-            int target() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 204); }
-            int targetPositionX() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 208); }
-            int targetPositionY() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 212); }
-            int order() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 216); }
-            int orderTarget() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 220); }
-            int orderTargetPositionX() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 224); }
-            int orderTargetPositionY() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 228); }
-            int secondaryOrder() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 232); }
-            int rallyPositionX() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 236); }
-            int rallyPositionY() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 240); }
-            int rallyUnit() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 244); }
-            int addon() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 248); }
-            int nydusExit() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 252); }
-            int powerUp() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 256); }
+            int target() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 204); }
+            int targetPositionX() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 208); }
+            int targetPositionY() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 212); }
+            int order() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 216); }
+            int orderTarget() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 220); }
+            int orderTargetPositionX() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 224); }
+            int orderTargetPositionY() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 228); }
+            int secondaryOrder() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 232); }
+            int rallyPositionX() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 236); }
+            int rallyPositionY() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 240); }
+            int rallyUnit() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 244); }
+            int addon() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 248); }
+            int nydusExit() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 252); }
+            int powerUp() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 256); }
 
-            int transport() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 260); }
-            int carrier() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 264); }
-            int hatchery() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 268); }
+            int transport() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 260); }
+            int carrier() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 264); }
+            int hatchery() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 268); }
 
-            boolean exists() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 272) != 0; }
-            boolean hasNuke() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 273) != 0; }
-            boolean isAccelerating() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 274) != 0; }
-            boolean isAttacking() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 275) != 0; }
-            boolean isAttackFrame() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 276) != 0; }
-            boolean isBeingGathered() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 277) != 0; }
-            boolean isBlind() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 278) != 0; }
-            boolean isBraking() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 279) != 0; }
-            boolean isBurrowed() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 280) != 0; }
-            int  carryResourceType() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 284); }
-            boolean isCloaked() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 288) != 0; }
-            boolean isCompleted() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 289) != 0; }
-            boolean isConstructing() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 290) != 0; }
-            boolean isDetected() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 291) != 0; }
-            boolean isGathering() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 292) != 0; }
-            boolean isHallucination() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 293) != 0; }
-            boolean isIdle() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 294) != 0; }
-            boolean isInterruptible() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 295) != 0; }
-            boolean isInvincible() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 296) != 0; }
-            boolean isLifted() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 297) != 0; }
-            boolean isMorphing() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 298) != 0; }
-            boolean isMoving() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 299) != 0; }
-            boolean isParasited() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 300) != 0; }
-            boolean isSelected() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 301) != 0; }
-            boolean isStartingAttack() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 302) != 0; }
-            boolean isStuck() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 303) != 0; }
-            boolean isTraining() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 304) != 0; }
-            boolean isUnderStorm() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 305) != 0; }
-            boolean isUnderDarkSwarm() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 306) != 0; }
-            boolean isUnderDWeb() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 307) != 0; }
-            boolean isPowered() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 308) != 0; }
-            boolean isVisible(int player) { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 309 + player) != 0; }
-            int  buttonset() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 320); }
+            boolean exists() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 272) != 0; }
+            boolean hasNuke() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 273) != 0; }
+            boolean isAccelerating() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 274) != 0; }
+            boolean isAttacking() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 275) != 0; }
+            boolean isAttackFrame() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 276) != 0; }
+            boolean isBeingGathered() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 277) != 0; }
+            boolean isBlind() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 278) != 0; }
+            boolean isBraking() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 279) != 0; }
+            boolean isBurrowed() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 280) != 0; }
+            int  carryResourceType() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 284); }
+            boolean isCloaked() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 288) != 0; }
+            boolean isCompleted() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 289) != 0; }
+            boolean isConstructing() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 290) != 0; }
+            boolean isDetected() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 291) != 0; }
+            boolean isGathering() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 292) != 0; }
+            boolean isHallucination() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 293) != 0; }
+            boolean isIdle() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 294) != 0; }
+            boolean isInterruptible() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 295) != 0; }
+            boolean isInvincible() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 296) != 0; }
+            boolean isLifted() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 297) != 0; }
+            boolean isMorphing() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 298) != 0; }
+            boolean isMoving() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 299) != 0; }
+            boolean isParasited() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 300) != 0; }
+            boolean isSelected() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 301) != 0; }
+            boolean isStartingAttack() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 302) != 0; }
+            boolean isStuck() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 303) != 0; }
+            boolean isTraining() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 304) != 0; }
+            boolean isUnderStorm() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 305) != 0; }
+            boolean isUnderDarkSwarm() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 306) != 0; }
+            boolean isUnderDWeb() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 307) != 0; }
+            boolean isPowered() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 308) != 0; }
+            boolean isVisible(int player) { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 309 + player) != 0; }
+            int  buttonset() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 320); }
 
-            int lastAttackerPlayer() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 324); }
-            boolean recentlyAttacked() { return sharedMemory.get(UnitOffset + 4 + UnitData.SIZE * id + 328) != 0; }
-            int replayID() { return sharedMemory.getInt(UnitOffset + 4 + UnitData.SIZE * id + 332); }
+            int lastAttackerPlayer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 324); }
+            boolean recentlyAttacked() { return sharedMemory.get(UnitOffset + 8 + UnitData.SIZE * id + 328) != 0; }
+            int replayID() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 332); }
 
             static final int SIZE = 336;
         }
@@ -505,6 +505,11 @@ public class Client {
                 System.out.println("Game started!");
                 while(c.data.isInGame()) {
                     c.update();
+                    int self = c.data.self();
+                    for(int i = 0; i < c.data.getUnitCount(); ++ i) {
+                        GameData.UnitData data = c.data.getUnit(i);
+                        System.out.println("Unit with id " + data.id() + " at " + data.positionX() + ", " + data.positionY());
+                    }
                 }
             } catch(Throwable t) {
                 System.out.println("Game not found.");
