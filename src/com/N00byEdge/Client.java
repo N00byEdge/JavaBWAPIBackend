@@ -483,14 +483,13 @@ public class Client {
     }
 
     private void handleEvent(GameData.Event event) {
-        System.out.println("Event: " + event.type() + ", " + event.v1() + ", " + event.v2());
     }
 
     public void update() throws Throwable {
         int code = 1;
-        while(code != 2) {
+        pipe.writeInt(code);
+        while(code != 2)
             code = pipe.readInt();
-        }
 
         for(int i = 0; i < data.eventCount(); ++ i) {
             handleEvent(data.event(i));
