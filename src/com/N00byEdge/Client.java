@@ -479,6 +479,7 @@ public class Client {
                 }
             }
         }
+        throw new Throwable("All servers busy!");
     }
 
     private void handleEvent(GameData.Event event) {
