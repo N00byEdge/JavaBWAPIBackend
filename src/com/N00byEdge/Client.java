@@ -24,7 +24,7 @@ public class Client {
             sharedMemory.get(buf, offset, maxLen);
             int len = 0;
             for(; len < buf.length && buf[len] != 0; ++ len) { }
-            return new String(buf, 0, len, StandardCharsets.US_ASCII);
+            return new String(buf, 0, len, StandardCharsets.ISO_8859_1);
         }
 
         private double parseDouble(int offset) {
@@ -384,67 +384,92 @@ public class Client {
 
         static final int StringOffset = 0xa35ec0;
 
-        int eventStringCount() { return sharedMemory.getInt(StringOffset); }
-        String eventString(int s) { return parseString(StringOffset + 4 + 256 * s, 256); }
+        int addEventString(String s) {
+            if(s.length() >= 256)
+                throw new StringIndexOutOfBoundsException();
+            int at = sharedMemory.getInt(StringOffset);
+            sharedMemory.position(StringOffset + 8 + at * 256);
+            sharedMemory.put(s.getBytes(StandardCharsets.ISO_8859_1), 0, s.length());
+            sharedMemory.position(0);
+            sharedMemory.putInt(StringOffset, at + 1);
+            return at;
+        }
 
-        int stringCount() { return sharedMemory.getInt(StringOffset); }
-        String string(int s) { return parseString(StringOffset + 1024004 + 1024 * s, 1024); }
+        int addString(String s) {
+            if(s.length() >= 1024)
+                throw new StringIndexOutOfBoundsException();
+            int at = sharedMemory.getInt(StringOffset + 256000);
+            sharedMemory.position(StringOffset + 256008 + at * 1024);
+            sharedMemory.put(s.getBytes(StandardCharsets.ISO_8859_1), 0, s.length());
+            sharedMemory.position(0);
+            sharedMemory.putInt(StringOffset + 256000, at + 1);
+            return at;
+        }
 
         static final int ShapeOffset = 0x1dfc6c8;
 
         int shapeCount() { return sharedMemory.getInt(ShapeOffset); }
 
         public class Shape {
-            int idx;
-            Shape(int idx) { this.idx = idx; }
-
-            int type() { return sharedMemory.getInt(ShapeOffset + idx * Shape.SIZE + 4); }
-            int coordType() { return sharedMemory.getInt(ShapeOffset + idx * Shape.SIZE + 8); }
-            int x1() { return sharedMemory.getInt(ShapeOffset + idx * Shape.SIZE + 12); }
-            int y1() { return sharedMemory.getInt(ShapeOffset + idx * Shape.SIZE + 16); }
-            int x2() { return sharedMemory.getInt(ShapeOffset + idx * Shape.SIZE + 20); }
-            int y2() { return sharedMemory.getInt(ShapeOffset + idx * Shape.SIZE + 24); }
-            int extra1() { return sharedMemory.getInt(ShapeOffset + idx * Shape.SIZE + 28); }
-            int extra2() { return sharedMemory.getInt(ShapeOffset + idx * Shape.SIZE + 32); }
-            int color() { return sharedMemory.getInt(ShapeOffset + idx * Shape.SIZE + 36); }
-            boolean isSolid() { return sharedMemory.get(ShapeOffset + idx * Shape.SIZE + 40) != 0; }
+            int type, coordType, x1, y1, x2, y2, extra1, extra2, color, isSolid;
+            Shape(int type, int coordType, int x1, int y1, int x2, int y2, int extra1, int extra2, int color, int isSolid)
+            { this.type = type; this.coordType = coordType; this.x1 = x1; this.y1 = y1; this.x2 = x2; this.y2 = y2;
+                this.extra1 = extra1; this.extra2 = extra2; this.color = color; this.isSolid = isSolid; }
 
             static final int SIZE = 40;
         }
 
+        public void addShape(Shape shape) {
+            int at = sharedMemory.getInt(ShapeOffset);
+            sharedMemory.putInt(ShapeOffset + at * Shape.SIZE + 4, shape.type);
+            sharedMemory.putInt(ShapeOffset + at * Shape.SIZE + 8, shape.coordType);
+            sharedMemory.putInt(ShapeOffset + at * Shape.SIZE + 12, shape.x1);
+            sharedMemory.putInt(ShapeOffset + at * Shape.SIZE + 16, shape.y1);
+            sharedMemory.putInt(ShapeOffset + at * Shape.SIZE + 20, shape.x2);
+            sharedMemory.putInt(ShapeOffset + at * Shape.SIZE + 24, shape.y2);
+            sharedMemory.putInt(ShapeOffset + at * Shape.SIZE + 28, shape.extra1);
+            sharedMemory.putInt(ShapeOffset + at * Shape.SIZE + 32, shape.extra2);
+            sharedMemory.putInt(ShapeOffset + at * Shape.SIZE + 36, shape.isSolid);
+            sharedMemory.putInt(ShapeOffset, at + 1);
+        }
+
         static final int CommandOffset = 0x1ebfbcc;
 
-        int commandCount() { return sharedMemory.getInt(CommandOffset); }
-
         public class Command {
-            int idx;
-            Command(int idx) { this.idx = idx; }
-
-            int type() { return sharedMemory.getInt(CommandOffset + 4 + Command.SIZE * idx); }
-            int value1() { return sharedMemory.getInt(CommandOffset + 8 + Command.SIZE * idx); }
-            int value2() { return sharedMemory.getInt(CommandOffset + 12 + Command.SIZE * idx); }
+            int type, value1, value2;
+            Command(int type, int value1, int value2) { this.type = type; this.value1 = value1; this.value2 = value2; }
 
             static final int SIZE = 12;
         }
 
-        Command command(int idx) { return new Command(idx); }
+        public void addCommand(Command command) {
+            int at = sharedMemory.getInt(CommandOffset);
+            sharedMemory.putInt(CommandOffset + at * Command.SIZE + 4, command.type);
+            sharedMemory.putInt(CommandOffset + at * Command.SIZE + 8, command.value1);
+            sharedMemory.putInt(CommandOffset + at * Command.SIZE + 12, command.value2);
+            sharedMemory.putInt(CommandOffset, at + 1);
+        }
 
         static final int UnitCommandOffset = 0x1efa550;
 
-        int unitCommandCount() { return sharedMemory.getInt(UnitCommandOffset); }
 
         public class UnitCommand {
-            int idx;
-            UnitCommand(int idx) { this.idx = idx; }
-
-            int type() { return sharedMemory.getInt(UnitCommandOffset + idx * UnitCommand.SIZE + 4 ); }
-            int unitIndex() { return sharedMemory.getInt(UnitCommandOffset + idx * UnitCommand.SIZE + 8); }
-            int targetIndex() { return sharedMemory.getInt(UnitCommandOffset + idx * UnitCommand.SIZE + 12); }
-            int x() { return sharedMemory.getInt(UnitCommandOffset + idx * UnitCommand.SIZE + 16); }
-            int y() { return sharedMemory.getInt(UnitCommandOffset + idx * UnitCommand.SIZE + 20); }
-            int extra() { return sharedMemory.getInt(UnitCommandOffset + idx * UnitCommand.SIZE + 24); }
+            int type, unit, target, x, y, extra;
+            UnitCommand(int type, int unit, int target, int x, int y, int extra)
+            { this.type = type; this.unit = unit; this.target = target; this.x = x; this.y = y; this.extra = extra; }
 
             static final int SIZE = 24;
+        }
+
+        public void addUnitCommand(UnitCommand command) {
+            int at = sharedMemory.getInt(UnitCommandOffset);
+            sharedMemory.putInt(UnitCommandOffset + at * UnitCommand.SIZE + 4, command.type);
+            sharedMemory.putInt(UnitCommandOffset + at * UnitCommand.SIZE + 8, command.unit);
+            sharedMemory.putInt(UnitCommandOffset + at * UnitCommand.SIZE + 12, command.target);
+            sharedMemory.putInt(UnitCommandOffset + at * UnitCommand.SIZE + 16, command.x);
+            sharedMemory.putInt(UnitCommandOffset + at * UnitCommand.SIZE + 20, command.y);
+            sharedMemory.putInt(UnitCommandOffset + at * UnitCommand.SIZE + 24, command.extra);
+            sharedMemory.putInt(UnitCommandOffset, at + 1);
         }
 
         static final int SIZE = 0x1f7ccd8;
@@ -501,21 +526,26 @@ public class Client {
         while(c == null) {
             try {
                 c = new Client();
-                while(!c.data.isInGame()) c.update();
-                System.out.println("Game started!");
-                while(c.data.isInGame()) {
-                    c.update();
-                    int self = c.data.self();
-                    for(int i = 0; i < c.data.getUnitCount(); ++ i) {
-                        GameData.UnitData data = c.data.getUnit(i);
-                        System.out.println("Unit with id " + data.id() + " at " + data.positionX() + ", " + data.positionY());
-                    }
-                }
             } catch(Throwable t) {
                 System.out.println("Game not found.");
                 t.printStackTrace();
                 Thread.sleep(1000);
             }
+        }
+
+        try {
+            while (!c.data.isInGame()) c.update();
+            System.out.println("Game started!");
+            c.data.addCommand(c.data.new Command(5, c.data.addString("Hello world!"), 0));
+            while (c.data.isInGame()) {
+                c.update();
+                int self = c.data.self();
+                for (int i = 0; i < c.data.getUnitCount(); ++i) {
+                    GameData.UnitData data = c.data.getUnit(i);
+                }
+            }
+        } catch(Throwable t) {
+
         }
     }
 }
