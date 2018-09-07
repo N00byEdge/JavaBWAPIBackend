@@ -21,7 +21,9 @@ public class Client {
     public final class GameData {
         private String parseString(int offset, int maxLen) {
             byte[] buf = new byte[maxLen];
-            sharedMemory.get(buf, offset, maxLen);
+            sharedMemory.position(offset);
+            sharedMemory.get(buf, 0, maxLen);
+            sharedMemory.position(0);
             int len = 0;
             for(; len < buf.length && buf[len] != 0; ++ len) { }
             return new String(buf, 0, len, StandardCharsets.ISO_8859_1);
@@ -29,7 +31,9 @@ public class Client {
 
         private double parseDouble(int offset) {
             byte[] buf = new byte[8];
-            sharedMemory.get(buf, offset, 8);
+            sharedMemory.position(offset);
+            sharedMemory.get(buf, 0, 8);
+            sharedMemory.position(0);
             ByteBuffer bb = ByteBuffer.wrap(buf);
             bb.order(ByteOrder.LITTLE_ENDIAN);
             return bb.getDouble();
@@ -115,7 +119,7 @@ public class Client {
         PlayerData getPlayer(int id) { return new PlayerData(id); }
 
         static final int UnitOffset = 0x11010;
-        int getUnitCount() { return sharedMemory.getInt(UnitOffset); }
+        int getInitialUnitCount() { return sharedMemory.getInt(UnitOffset); }
 
         public class UnitData {
             int id;
@@ -130,22 +134,22 @@ public class Client {
             double angle() { return parseDouble(UnitOffset + 8 + UnitData.SIZE * id + 24); }
             double velocityX() { return parseDouble(UnitOffset + 8 + UnitData.SIZE * id + 32); }
             double velocityY() { return parseDouble(UnitOffset + 8 + UnitData.SIZE * id + 40); }
-            int hitPoints() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 48); }
-            int lastHitPoints() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 52); }
-            int shields() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 56); }
-            int energy() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 60); }
-            int resouces() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 64); }
-            int resourceGroup() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 68); }
+            int hitPoints() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 48); }
+            int lastHitPoints() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 52); }
+            int shields() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 56); }
+            int energy() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 60); }
+            int resources() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 64); }
+            int resourceGroup() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 68); }
 
-            int killCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 72); }
-            int acidSporeCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 76); }
-            int scarabCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 80); }
-            int interceptorCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 84); }
-            int spiderMineCount() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 88); }
-            int groundWeaponCooldown() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 92); }
-            int airWeaponCooldown() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 96); }
-            int spellCooldown() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 100); }
-            int defenseMatrixPoints() { return sharedMemory.getInt(UnitOffset + 8 * UnitData.SIZE * id + 104); }
+            int killCount() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 72); }
+            int acidSporeCount() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 76); }
+            int scarabCount() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 80); }
+            int interceptorCount() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 84); }
+            int spiderMineCount() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 88); }
+            int groundWeaponCooldown() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 92); }
+            int airWeaponCooldown() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 96); }
+            int spellCooldown() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 100); }
+            int defenseMatrixPoints() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 104); }
 
             int defenseMatrixTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 108); }
             int ensnareTimer() { return sharedMemory.getInt(UnitOffset + 8 + UnitData.SIZE * id + 112); }
@@ -384,16 +388,8 @@ public class Client {
 
         static final int StringOffset = 0xa35ec0;
 
-        int addEventString(String s) {
-            if(s.length() >= 256)
-                throw new StringIndexOutOfBoundsException();
-            int at = sharedMemory.getInt(StringOffset);
-            sharedMemory.position(StringOffset + 8 + at * 256);
-            sharedMemory.put(s.getBytes(StandardCharsets.ISO_8859_1), 0, s.length());
-            sharedMemory.position(0);
-            sharedMemory.putInt(StringOffset, at + 1);
-            return at;
-        }
+        int eventStringCount() { return sharedMemory.getInt(StringOffset); }
+        String eventString(int s) { return parseString(StringOffset + 4 + 256 * s, 256); }
 
         int addString(String s) {
             if(s.length() >= 1024)
@@ -487,13 +483,20 @@ public class Client {
         System.out.println("Connected to BWAPI@" + procID + " with version " + data.getClientVersion() + ": " + data.getRevision());
     }
 
-    public Client() throws Throwable {
-        ByteBuffer buffer = Kernel32.INSTANCE.MapViewOfFile(MappingKernel.INSTANCE.OpenFileMapping(READ_WRITE, false, "Local\\bwapi_shared_memory_game_list"), READ_WRITE, 0, 0, gameTableSize).getByteBuffer(0, GAME_SIZE * 8);
-        buffer.order(ByteOrder.LITTLE_ENDIAN);
+    interface EventHandler {
+        public void operation(GameData.Event event);
+    }
+
+    EventHandler handler;
+
+    public Client(EventHandler handler) throws Throwable {
+        ByteBuffer gameList = Kernel32.INSTANCE.MapViewOfFile(MappingKernel.INSTANCE.OpenFileMapping(READ_WRITE, false, "Local\\bwapi_shared_memory_game_list"), READ_WRITE, 0, 0, gameTableSize).getByteBuffer(0, GAME_SIZE * 8);
+        gameList.order(ByteOrder.LITTLE_ENDIAN);
+        this.handler = handler;
         for(int i = 0; i < 8; ++ i) {
-            int procID = buffer.getInt(GAME_SIZE * i);
-            boolean connected = buffer.get(GAME_SIZE * i + 4) != 0;
-            int lastKeepAliveTime = buffer.getInt(GAME_SIZE * i + 8);
+            int procID = gameList.getInt(GAME_SIZE * i);
+            boolean connected = gameList.get(GAME_SIZE * i + 4) != 0;
+            int lastKeepAliveTime = gameList.getInt(GAME_SIZE * i + 8);
 
             if(procID != 0 && !connected) {
                 try {
@@ -507,45 +510,13 @@ public class Client {
         throw new Throwable("All servers busy!");
     }
 
-    private void handleEvent(GameData.Event event) {
-    }
-
     public void update() throws Throwable {
         int code = 1;
         pipe.writeInt(code);
         while(code != 2)
             code = pipe.readInt();
 
-        for(int i = 0; i < data.eventCount(); ++ i) {
-            handleEvent(data.event(i));
-        }
-    }
-
-    public static void main(String[] args) throws InterruptedException {
-        Client c = null;
-        while(c == null) {
-            try {
-                c = new Client();
-            } catch(Throwable t) {
-                System.out.println("Game not found.");
-                t.printStackTrace();
-                Thread.sleep(1000);
-            }
-        }
-
-        try {
-            while (!c.data.isInGame()) c.update();
-            System.out.println("Game started!");
-            c.data.addCommand(c.data.new Command(5, c.data.addString("Hello world!"), 0));
-            while (c.data.isInGame()) {
-                c.update();
-                int self = c.data.self();
-                for (int i = 0; i < c.data.getUnitCount(); ++i) {
-                    GameData.UnitData data = c.data.getUnit(i);
-                }
-            }
-        } catch(Throwable t) {
-
-        }
+        for(int i = 0; i < data.eventCount(); ++ i)
+            handler.operation(data.event(i));
     }
 }
