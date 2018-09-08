@@ -1,4 +1,4 @@
-package com.N00byEdge;
+package com.N00byEdge.JavaBWAPIBackend;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
